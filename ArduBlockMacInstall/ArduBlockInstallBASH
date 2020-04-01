@@ -1,18 +1,19 @@
 #!/bin/bash
+# echo Finding current directory...
+# cd "$(dirname "$0")"
+IFS=$' '
+FILE=$'ardublock-all-withNewPing.jar'
+USERS=$(dscl . -list /Users) # get list of all users
+# echo $IFS # uncomment if necessary for testing
+# echo $FILE
+# echo $USERS
+for u in $USERS
+do
+echo "Copying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
+mkdir -p /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool
+cp $FILE /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool/
 
-echo Finding current directory...
-cd "$(dirname "$0")"
-
-echo Copying .jar to correct location...
-mkdir -p ~/Documents/Arduino/tools/ArduBlockTool/tool
-cp ardublock-all-withNewPing.jar ~/Documents/Arduino/tools/ArduBlockTool/tool/
-
-echo Installing new libraries...
-mkdir -p ~/Documents/Arduino/libraries
-cp -r NewPing ~/Documents/Arduino/libraries/
-
-
-
-
-
-
+echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
+mkdir -p /Users/$u/Documents/Arduino/libraries
+cp -r NewPing /Users/$u/Documents/Arduino/libraries/
+done
