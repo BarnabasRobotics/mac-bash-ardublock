@@ -17,3 +17,11 @@ echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
 mkdir -p /Users/$u/Documents/Arduino/libraries
 cp -r NewPing /Users/$u/Documents/Arduino/libraries/
 done
+
+DRIVER=$'CH34x_Install_V1.3.zip'
+if test -f "$DRIVER"; then
+    echo "CH34x Driver exists"
+    unzip $DRIVER
+    echo "Running install"
+    # ./CH34x_Install # need more info: directory/filename and execute permission? chmod +x 
+fi
