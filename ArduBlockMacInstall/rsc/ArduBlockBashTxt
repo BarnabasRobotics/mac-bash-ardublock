@@ -1,27 +1,24 @@
-#!/bin/bash
+#!/bin/sh
 # echo Finding current directory...
 # cd "$(dirname "$0")"
 IFS=$' '
 FILE=$'ardublock-all-withNewPing.jar'
-USERS=$(dscl . -list /Users) # get list of all users
-# echo $IFS # uncomment if necessary for testing
-# echo $FILE
-# echo $USERS
-for u in $USERS
-do
-echo "Copying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
-mkdir -p /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool
-cp $FILE /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool/
+
+echo "Copying $FILE to /Applications/Arduino/tools/ArduBlockTool/tool..."
+mkdir -p /Applications/Arduino/tools/ArduBlockTool/tool
+cp $FILE /Applications/Arduino/tools/ArduBlockTool/tool/
 
 echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
-mkdir -p /Users/$u/Documents/Arduino/libraries
-cp -r NewPing /Users/$u/Documents/Arduino/libraries/
-done
+mkdir -p /Applications/Arduino/libraries
+cp -r NewPing /Applications/Arduino/libraries/
+
 
 DRIVER=$'CH34x_Install_V1.3.zip'
 if test -f "$DRIVER"; then
     echo "CH34x Driver exists"
     unzip $DRIVER
     echo "Running install"
+    chmod +x $DRIVER
+    ./$DRIVER
     # ./CH34x_Install # need more info: directory/filename and execute permission? chmod +x 
 fi
