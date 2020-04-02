@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # echo Finding current directory...
 # cd "$(dirname "$0")"
 IFS=$' '
@@ -11,3 +11,14 @@ cp $FILE /Applications/Arduino/tools/ArduBlockTool/tool/
 echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
 mkdir -p /Applications/Arduino/libraries
 cp -r NewPing /Applications/Arduino/libraries/
+
+
+DRIVER=$'CH34x_Install_V1.3.zip'
+if test -f "$DRIVER"; then
+    echo "CH34x Driver exists"
+    unzip $DRIVER
+    echo "Running install"
+    chmod +x $DRIVER
+    ./$DRIVER
+    # ./CH34x_Install # need more info: directory/filename and execute permission? chmod +x 
+fi
