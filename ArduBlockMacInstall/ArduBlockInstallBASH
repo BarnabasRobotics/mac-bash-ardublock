@@ -1,24 +1,30 @@
 #!/bin/sh
-# echo Finding current directory...
-# cd "$(dirname "$0")"
-IFS=$' '
-FILE=$'ardublock-all-withNewPing.jar'
 
-echo "Copying $FILE to /Applications/Arduino/tools/ArduBlockTool/tool..."
-mkdir -p /Applications/Arduino/tools/ArduBlockTool/tool
-cp ./$FILE /Applications/Arduino/tools/ArduBlockTool/tool/
+FILE='ardublock-all-withNewPing.jar'
+if test -f "./$FILE" ; then
+    echo "Copying $FILE to /Applications/Arduino/tools/ArduBlockTool/tool..."
+    mkdir -p /Applications/Arduino/tools/ArduBlockTool/tool
+    cp ./$FILE /Applications/Arduino/tools/ArduBlockTool/tool/
+else
+    echo "$FILE does not exist"
+fi
 
-echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
-mkdir -p /Applications/Arduino/libraries
-cp -r ./NewPing /Applications/Arduino/libraries/
+LIB='NewPing'
+if test -d "./$LIB" ; then
+    echo "Installing $LIB Library to /Applications/Arduino/libraries"
+    mkdir -p /Applications/Arduino/libraries
+    cp -r ./$LIB /Applications/Arduino/libraries/
+else
+    echo "$LIB does not exist"
+fi
 
-
-DRIVER=$'CH34x_Install_V1.3.zip'
+DRIVER='CH34x_Install_V1.3.zip'
 if test -f "./$DRIVER"; then
     echo "CH34x Driver exists"
     unzip $DRIVER
     echo "Running install"
     chmod +x $DRIVER
     ./$DRIVER
-    # ./CH34x_Install # need more info: directory/filename and execute permission? chmod +x 
+else
+    echo "$DRIVER does not exist"
 fi
