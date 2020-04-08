@@ -6,15 +6,15 @@ FILE=$'ardublock-all-withNewPing.jar'
 
 echo "Copying $FILE to /Applications/Arduino/tools/ArduBlockTool/tool..."
 mkdir -p /Applications/Arduino/tools/ArduBlockTool/tool
-cp $FILE /Applications/Arduino/tools/ArduBlockTool/tool/
+cp ./$FILE /Applications/Arduino/tools/ArduBlockTool/tool/
 
 echo "Installing Ping Library to /Users/$u/Documents/Arduino/libraries"
 mkdir -p /Applications/Arduino/libraries
-cp -r NewPing /Applications/Arduino/libraries/
+cp -r ./NewPing /Applications/Arduino/libraries/
 
 
 DRIVER=$'CH34x_Install_V1.3.zip'
-if test -f "$DRIVER"; then
+if test -f "./$DRIVER"; then
     echo "CH34x Driver exists"
     unzip $DRIVER
     echo "Running install"
