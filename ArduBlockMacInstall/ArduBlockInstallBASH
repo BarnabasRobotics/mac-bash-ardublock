@@ -8,8 +8,8 @@ USERS=$(dscl . list /Users | grep -vE '^_|dameon|nobody|root')
 if test -f "./$FILE" ; then
     for u in $USERS; do
         echo "Copying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
-        mkdir -p /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool
-        cp ./$FILE  /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool/
+        sudo mkdir -p /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool
+        sudo cp ./$FILE  /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool/
     done
 else
     echo "$FILE does not exist"
@@ -18,8 +18,8 @@ fi
 LIB='NewPing'
 if test -d "./$LIB" ; then
     echo "Installing $LIB Library to /Applications/Arduino/libraries"
-    mkdir -p /Applications/Arduino/libraries
-    cp -r ./$LIB /Applications/Arduino/libraries/
+    sudo mkdir -p /Applications/Arduino/libraries
+    sudo cp -r ./$LIB /Applications/Arduino/libraries/
 else
     echo "$LIB does not exist"
 fi
@@ -30,17 +30,8 @@ if test -f "./$DRIVERZIP"; then
     echo "CH34x Driver exists"
     echo "Running install"
     unzip $DRIVERZIP 
-    open $DRIVER
-    #sudo installer -allowUntrusted -pkg $DRIVER -target /
+    #open $DRIVER
+    sudo installer -verbose -allowUntrusted -pkg $DRIVER -target /
 else
     echo "$DRIVERZIP does not exist"
 fi
-
-
-
-
-
-
-
-
-
