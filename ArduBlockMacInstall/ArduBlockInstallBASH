@@ -4,7 +4,7 @@ echo Finding current directory...
 cd "$(dirname "$0")"
 
 FILE='ardublock-all-withNewPing.jar'
-USERS=$(dscl . list /Users | grep -vE '^_|dameon|nobody|root')
+USERS=$(dscl . list /Users | grep -vE '^_|daemon|nobody|root')
 if test -f "./$FILE" ; then
     for u in $USERS; do
         echo "Copying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
@@ -29,9 +29,11 @@ DRIVER='ch34x_install_v1.3.pkg'
 if test -f "./$DRIVERZIP"; then
     echo "CH34x Driver exists"
     echo "Running install"
-    unzip $DRIVERZIP 
-    #open $DRIVER
-    sudo installer -verbose -allowUntrusted -pkg $DRIVER -target /
+    unzip $DRIVERZIP
+    chmod +x $DRIVER
+    ./$DRIVER
+    # open $DRIVER
+    # sudo installer -verbose -allowUntrusted -pkg $DRIVER -target /
 else
     echo "$DRIVERZIP does not exist"
 fi
