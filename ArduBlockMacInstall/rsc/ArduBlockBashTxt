@@ -1,5 +1,8 @@
 #!/bin/sh
 
+echo Finding current directory...
+cd "$(dirname "$0")"
+
 FILE='ardublock-all-withNewPing.jar'
 if test -f "./$FILE" ; then
     echo "Copying $FILE to /Applications/Arduino/tools/ArduBlockTool/tool..."
@@ -18,13 +21,23 @@ else
     echo "$LIB does not exist"
 fi
 
-DRIVER='CH34x_Install_V1.3.zip'
-if test -f "./$DRIVER"; then
+DRIVERZIP='CH34x_Install_V1.3.zip'
+DRIVER='ch34x_install_v1.3.pkg'
+if test -f "./$DRIVERZIP"; then
     echo "CH34x Driver exists"
-    unzip $DRIVER
     echo "Running install"
-    chmod +x $DRIVER
-    ./$DRIVER
+    unzip $DRIVERZIP 
+    open $DRIVER
+    #sudo installer -allowUntrusted -pkg $DRIVER -target /
 else
-    echo "$DRIVER does not exist"
+    echo "$DRIVERZIP does not exist"
 fi
+
+
+
+
+
+
+
+
+
