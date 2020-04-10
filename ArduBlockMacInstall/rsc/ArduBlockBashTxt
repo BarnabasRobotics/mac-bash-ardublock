@@ -77,12 +77,9 @@ DRIVER='ch34x_install_v1.3.pkg'
 if test -f "./$DRIVER"; then
 #   echo "CH34x Driver exists"
     echo "\nRunning install"
-#    chmod +x $DRIVERZIP
-#    ./$DRIVERZIP
-#    unzip $DRIVERZIP
-#     chmod +x $DRIVER
-#     ./$DRIVER
-    # open $DRIVER
+    unzip $DRIVERZIP
+    chmod +x $DRIVER
+    open $DRIVER
     sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
 else
     echo "$DRIVERZIP does not exist"
