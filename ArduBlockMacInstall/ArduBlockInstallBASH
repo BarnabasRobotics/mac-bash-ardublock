@@ -1,5 +1,5 @@
 #!/bin/sh
-
+### Thanks to https://grahamrpugh.com/2017/01/07/application-to-run-shell-commands-with-admin-rights.html
 ### Script designed to be placed in a "Run Shell Script" action in Automator
 ### This allows the administrator password to be called, and used in the script where sudo is required
 ### Beware: the inputted password is used in echo commands
