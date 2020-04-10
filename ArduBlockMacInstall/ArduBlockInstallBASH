@@ -6,14 +6,14 @@
 ### Usage: Use `sudo` without a path to ensure the `sudo` function is called rather than the actual command
 
 # Dialog Title
-dialogTitle="Ardublock Install Helper"
+dialogTitle="Ardublock and CH34x Installer"
 
 # obtain the password from a dialog box
 authPass=$(/usr/bin/osascript <<EOT
 tell application "System Events"
     activate
     repeat
-        display dialog "This application requires administrator privileges. Please enter your administrator account password below to continue:" ¬
+        display dialog "Please enter your Apple ID password to start software installation." ¬
             default answer "" ¬
             with title "$dialogTitle" ¬
             with hidden answer ¬
@@ -46,6 +46,8 @@ sudo () {
     /bin/echo $authPass | /usr/bin/sudo -S "$@"
 }
 
+echo "\n************************************"
+echo "\nBarnabas Ardublock and CH34x Driver Beginning...\n"
 echo Finding current directory...
 cd "$(dirname "$0")"
 
@@ -53,7 +55,7 @@ FILE='ardublock-all-withNewPing.jar'
 USERS=$(dscl . list /Users | grep -vE '^_|daemon|nobody|root')
 if test -f "./$FILE" ; then
     for u in $USERS; do
-        echo "Copying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
+        echo "\nCopying $FILE to /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool..."
         sudo mkdir -p /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool
         sudo cp ./$FILE  /Users/$u/Documents/Arduino/tools/ArduBlockTool/tool/
     done
@@ -63,7 +65,7 @@ fi
 
 LIB='NewPing'
 if test -d "./$LIB" ; then
-    echo "Installing $LIB Library to /Applications/Arduino/libraries"
+    echo "\nInstalling $LIB Library to /Applications/Arduino/libraries"
     sudo mkdir -p /Applications/Arduino/libraries
     sudo cp -r ./$LIB /Applications/Arduino/libraries/
 else
@@ -72,16 +74,39 @@ fi
 
 DRIVERZIP='CH34x_Install_V1.3.zip'
 DRIVER='ch34x_install_v1.3.pkg'
-if test -f "./$DRIVERZIP"; then
-    echo "CH34x Driver exists"
-    echo "Running install"
-    chmod +x $DRIVERZIP
-    ./$DRIVERZIP
-#     unzip $DRIVERZIP
+if test -f "./$DRIVER"; then
+#   echo "CH34x Driver exists"
+    echo "\nRunning install"
+#    chmod +x $DRIVERZIP
+#    ./$DRIVERZIP
+#    unzip $DRIVERZIP
 #     chmod +x $DRIVER
 #     ./$DRIVER
     # open $DRIVER
-    # sudo installer -verbose -allowUntrusted -pkg $DRIVER -target /
+    sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
 else
     echo "$DRIVERZIP does not exist"
 fi
+
+reStart=$(/usr/bin/osascript <<EOT
+tell application "System Events"
+    activate
+        display dialog "Installation complete! Click 'Restart' to reboot your computer. This must be done before trying to connect to your Barnabas hardware." ¬
+            with title "$dialogTitle" ¬
+            buttons {"Restart", "Later"} default button 1
+        if button returned of the result is "Restart" then
+            return 1
+        else if the button returned of the result is "Later" then
+            return 0
+        end if
+        end tell
+EOT
+)
+
+# reboot if selected
+if [ "$reStart" == 1 ]; then
+    sudo reboot
+    exit 0
+fi
+
+
