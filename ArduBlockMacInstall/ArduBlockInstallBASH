@@ -73,20 +73,39 @@ else
 fi
 
 DRIVERZIP='CH34x_Install_V1.3.zip'
-DRIVER='ch34x_install_v1.3.pkg'
+DRIVER='CH34x_Install_V1.3.pkg'
+
+
 if test -f "./$DRIVER"; then
-#   echo "CH34x Driver exists"
-    echo "\nRunning install"
-#    chmod +x $DRIVERZIP
-#    ./$DRIVERZIP
-#    unzip $DRIVERZIP
-#     chmod +x $DRIVER
-#     ./$DRIVER
-    # open $DRIVER
-    sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
+    continue
+elif test -f "./$DRIVERZIP"; then
+    echo "\nUnzipping Driver"
+    unzip $DRIVERZIP
+    sudo chmod +x $DRIVER
 else
-    echo "$DRIVERZIP does not exist"
+    missing=$(/usr/bin/osascript <<EOT
+tell application "System Events"
+    activate
+        display dialog "CH34x files are missing. Driver not installed." ¬
+            with title "$dialogTitle" ¬
+            buttons {"Close", "Log"} default button 1
+        if button returned of the result is "Close" then
+            return 0
+        else if the button returned of the result is "Log" then
+            return 1
+        end if
+        end tell
+EOT
+)
+    if [ "$missing" == 1 ]; then
+        echo $(date -R) " -Missing files;"  >> ./error.log
+    fi
+    exit 1
 fi
+
+# "CH34x Driver exists"
+echo "\nRunning install"
+sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
 
 reStart=$(/usr/bin/osascript <<EOT
 tell application "System Events"
@@ -108,5 +127,3 @@ if [ "$reStart" == 1 ]; then
     sudo reboot
     exit 0
 fi
-
-
