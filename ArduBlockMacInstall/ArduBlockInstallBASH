@@ -64,17 +64,19 @@ else
 fi
 
 LIB='NewPing'
+USERS=$(dscl . list /Users | grep -vE '^_|daemon|nobody|root')
 if test -d "./$LIB" ; then
-    echo "\nInstalling $LIB Library to /Applications/Arduino/libraries"
-    sudo mkdir -p /Applications/Arduino/libraries
-    sudo cp -r ./$LIB /Applications/Arduino/libraries/
+    for u in $USERS; do
+        echo "\nInstalling $LIB Library to /Users/$u/Documents/Arduino/libraries"
+        sudo mkdir -p /Users/$u/Documents/Arduino/libraries
+        sudo cp -r ./$LIB  /Users/$u/Documents/Arduino/libraries/
+    done
 else
     echo "$LIB does not exist"
 fi
 
 DRIVERZIP='CH34x_Install_V1.3.zip'
 DRIVER='CH34x_Install_V1.3.pkg'
-
 
 if test -f "./$DRIVER"; then
     continue
