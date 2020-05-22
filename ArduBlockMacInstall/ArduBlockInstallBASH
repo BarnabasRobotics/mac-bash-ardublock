@@ -75,8 +75,8 @@ else
     echo "$LIB does not exist"
 fi
 
-DRIVERZIP='CH34x_Install_V1.3.zip'
-DRIVER='CH34x_Install_V1.3.pkg'
+DRIVERZIP='CH34x_Install_V1.5.zip'
+DRIVER='CH34x_Install_V1.5.pkg'
 
 if test -f "./$DRIVER"; then
     continue
@@ -105,8 +105,16 @@ EOT
     exit 1
 fi
 
+# uninstall any previous drivers
+echo "\nUninstalling previous versions of CH34x Driver"
+
+sudo kextunload /Library/Extensions/usbserial.kext
+sudo kextunload /System/Library/Extensions/usb.kext
+sudo rm -rf /System/Library/Extensions/usb.kext
+sudo rm -rf /Library/Extensions/usbserial.kext
+
 # "CH34x Driver exists"
-echo "\nRunning install"
+echo "\nInstalling V1.5 CH34x Driver"
 sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
 
 reStart=$(/usr/bin/osascript <<EOT
