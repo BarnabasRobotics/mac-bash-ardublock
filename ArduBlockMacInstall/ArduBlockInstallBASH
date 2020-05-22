@@ -115,18 +115,24 @@ sudo rm -rf /Library/Extensions/usbserial.kext
 
 # "CH34x Driver exists"
 echo "\nInstalling V1.5 CH34x Driver"
-sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
+echo "\nPlease wait..."
+#sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
+sudo installer -allowUntrusted -pkg $DRIVER -target /
+
+# load driver so that you don't need to restart the computer
+
+sudo kextload /Library/Extensions/usbserial.kext
 
 reStart=$(/usr/bin/osascript <<EOT
 tell application "System Events"
     activate
-        display dialog "Installation complete! Click 'Restart' to reboot your computer. This must be done before trying to connect to your Barnabas hardware." ¬
+        display dialog "Installation complete! Click 'OK' to close the window." ¬
             with title "$dialogTitle" ¬
-            buttons {"Restart", "Later"} default button 1
-        if button returned of the result is "Restart" then
-            return 1
-        else if the button returned of the result is "Later" then
+            buttons {"OK"} default button 1
+        if button returned of the result is "OK" then
             return 0
+        # else if the button returned of the result is "Later" then
+        #    return 0
         end if
         end tell
 EOT
@@ -135,5 +141,9 @@ EOT
 # reboot if selected
 if [ "$reStart" == 1 ]; then
     sudo reboot
+    exit 0
+fi
+
+if [ "$reStart" == 0 ]; then
     exit 0
 fi
