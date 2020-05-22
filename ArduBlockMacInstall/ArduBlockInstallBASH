@@ -115,12 +115,13 @@ sudo rm -rf /Library/Extensions/usbserial.kext
 
 # "CH34x Driver exists"
 echo "\nInstalling V1.5 CH34x Driver"
-echo "\nPlease wait..."
+echo "\nPlease wait. This may take up to 5 min...\n"
 #sudo installer -verboseR -allowUntrusted -pkg $DRIVER -target /
 sudo installer -allowUntrusted -pkg $DRIVER -target /
 
 # load driver so that you don't need to restart the computer
 
+echo "\nEnabling CH34x driver to avoid reboot"
 sudo kextload /Library/Extensions/usbserial.kext
 
 reStart=$(/usr/bin/osascript <<EOT
